@@ -1,0 +1,36 @@
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> result = new ArrayList<>();
+
+        if (s.length() < p.length()) {
+            return result;
+        }
+
+        int[] pFreq = new int[26];
+        int[] sFreq = new int[26];
+
+        // Count characters in p
+        for (char c : p.toCharArray()) {
+            pFreq[c - 'a']++;
+        }
+
+        int windowSize = p.length();
+
+        for (int i = 0; i < s.length(); i++) {
+            // Add current character
+            sFreq[s.charAt(i) - 'a']++;
+
+            // Remove character outside the window
+            if (i >= windowSize) {
+                sFreq[s.charAt(i - windowSize) - 'a']--;
+            }
+
+            // Check current window
+            if (i >= windowSize - 1 && Arrays.equals(pFreq, sFreq)) {
+                result.add(i - windowSize + 1);
+            }
+        }
+
+        return result;
+    }
+}
